@@ -2,18 +2,19 @@ import React, { Component } from 'react';
 import { Table } from 'react-bootstrap';
 import axios from 'axios';
 import Book from '../components/book';
+import loadingImage from '../loading.svg';
 
 class BookList extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { books: [] };
+		this.state = { books: [], isLoading: true };
 		this.bookList = this.bookList.bind(this);
 	}
 
 	componentDidMount() {
 		axios
 			.get('https://timoti-booklist-server.herokuapp.com/books')
-			.then((res) => this.setState({ books: res.data }))
+			.then((res) => this.setState({ books: res.data, isLoading: false }))
 			.catch((err) => console.log(err));
 	}
 
@@ -37,8 +38,22 @@ class BookList extends Component {
 							<th>Action</th>
 						</tr>
 					</thead>
-					<tbody>{this.bookList()}</tbody>
+					<tbody>
+						{this.state.isLoading === false && this.bookList()}
+					</tbody>
 				</Table>
+				{this.state.isLoading === true && (
+					<img
+						src={loadingImage}
+						style={{
+							display: 'block',
+							marginLeft: 'auto',
+							marginRight: 'auto',
+							width: '10%'
+						}}
+						alt="loadingImage"
+					/>
+				)}
 			</div>
 		);
 	}

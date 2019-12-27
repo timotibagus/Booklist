@@ -21,6 +21,7 @@ function NavBar() {
 						</Link>
 					</li>
 				</Nav>
+				<Navbar.Text>Github: timotibagus/booklist</Navbar.Text>
 			</Navbar.Collapse>
 		</Navbar>
 	);
