@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Table } from 'react-bootstrap';
 import axios from 'axios';
 import Book from '../components/book';
-import loadingImage from '../loading.svg';
+import loadingImage from '../loading.gif';
 
 class BookList extends Component {
 	constructor(props) {
