@@ -10,6 +10,8 @@ function Book({ book, number }) {
 			<td>{book.publisher}</td>
 			<td>
 				<Link to={`/edit/${book._id}`}>Edit</Link>
+				|
+				<Link to={`/delete/${book._id}`}>Delete</Link>
 			</td>
 		</tr>
 	);
