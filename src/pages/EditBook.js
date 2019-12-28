@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
-import { Form, Button, Alert } from 'react-bootstrap';
+import { Form, Alert, Button } from 'react-bootstrap';
 import axios from 'axios';
 
-class AddBook extends Component {
+class EditBook extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			title: '',
 			description: '',
-			publisher: '',
-			submited: false
+			publisher: ''
 		};
 		this.onChangeTitle = this.onChangeTitle.bind(this);
 		this.onChangeDescription = this.onChangeDescription.bind(this);
@@ -17,6 +16,20 @@ class AddBook extends Component {
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
+	componentDidMount() {
+		const { id } = this.props.match.params;
+		const uri = `https://timoti-booklist-server.herokuapp.com/books/${id}`;
+		axios
+			.get(uri)
+			.then((res) =>
+				this.setState({
+					title: res.data.title,
+					description: res.data.description,
+					publisher: res.data.publisher
+				})
+			)
+			.catch((err) => console.log(err));
+	}
 	onChangeTitle(e) {
 		this.setState({
 			title: e.target.value
@@ -32,26 +45,22 @@ class AddBook extends Component {
 			publisher: e.target.value
 		});
 	}
-	handleSubmit(event) {
-		event.preventDefault();
-
-		const newBook = {
+	handleSubmit(e) {
+		e.preventDefault();
+		const { id } = this.props.match.params;
+		const uri = `https://timoti-booklist-server.herokuapp.com/books/${id}`;
+		const updateBook = {
 			title: this.state.title,
 			description: this.state.description,
 			publisher: this.state.publisher
 		};
-		const uri = 'https://timoti-booklist-server.herokuapp.com/books';
-		axios.post(uri, newBook).then((res) => console.log(res.data));
-
-		this.setState({
-			description: '',
-			title: '',
-			publisher: '',
-			submited: !this.state.submited
-		});
-		setInterval(() => {
-			this.setState({ submited: false });
-		}, 3000);
+		axios
+			.patch(uri, updateBook)
+			.then((res) => {
+				console.log(res.data);
+				this.props.history.push('/');
+			})
+			.catch((err) => console.log(err));
 	}
 
 	render() {
@@ -87,14 +96,9 @@ class AddBook extends Component {
 				<Button variant="primary" type="submit">
 					Submit
 				</Button>
-
-				{this.state.submited === true && (
-					<Alert variant="success" style={{ marginTop: 10 }}>
-						Data added!
-					</Alert>
-				)}
 			</Form>
 		);
 	}
 }
-export default AddBook;
+
+export default EditBook;
