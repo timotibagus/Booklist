@@ -7,8 +7,9 @@ import loadingImage from '../loading.gif';
 class BookList extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { books: [], isLoading: true };
+		this.state = { books: [], isLoading: true, searchField: '' };
 		this.bookList = this.bookList.bind(this);
+		this.onChangeHandler = this.onChangeHandler.bind(this);
 	}
 
 	componentDidMount() {
@@ -19,15 +20,33 @@ class BookList extends Component {
 	}
 
 	bookList() {
-		return this.state.books.map((currenData, index) => {
+		const { books, searchField } = this.state;
+		const filterBook = books.filter((book) => {
+			return book.title.toLowerCase().includes(searchField.toLowerCase());
+		});
+		return filterBook.map((currenData, index) => {
 			return <Book book={currenData} number={index} key={index} />;
 		});
+	}
+
+	onChangeHandler(e) {
+		this.setState({ searchField: e.target.value });
 	}
 
 	render() {
 		return (
 			<div style={{ marginTop: 10 }}>
-				<h3>Book List</h3>
+				<div>
+					<h3 className="d-flex justify-content-center">Book List</h3>
+				</div>
+
+				<input
+					type="text"
+					placeholder="Search Book"
+					onChange={this.onChangeHandler}
+					value={this.state.searchField}
+					className="form-control mb-2"
+				/>
 				<Table responsive>
 					<thead>
 						<tr>
