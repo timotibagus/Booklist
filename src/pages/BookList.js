@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Table } from 'react-bootstrap';
 import axios from 'axios';
+
 import Book from '../components/book';
+import SearchBox from '../components/searchbox';
 import loadingImage from '../loading.gif';
 
 class BookList extends Component {
@@ -39,13 +41,9 @@ class BookList extends Component {
 				<div>
 					<h3 className="d-flex justify-content-center">Book List</h3>
 				</div>
-
-				<input
-					type="text"
-					placeholder="Search Book"
+				<SearchBox
 					onChange={this.onChangeHandler}
 					value={this.state.searchField}
-					className="form-control mb-2"
 				/>
 				<Table responsive>
 					<thead>
