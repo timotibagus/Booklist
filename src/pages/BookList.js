@@ -9,7 +9,11 @@ import loadingImage from '../loading.gif';
 class BookList extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { books: [], isLoading: true, searchField: '' };
+		this.state = {
+			books: [],
+			isLoading: true,
+			searchField: ''
+		};
 		this.bookList = this.bookList.bind(this);
 		this.onChangeHandler = this.onChangeHandler.bind(this);
 	}
@@ -26,9 +30,15 @@ class BookList extends Component {
 		const filterBook = books.filter((book) => {
 			return book.title.toLowerCase().includes(searchField.toLowerCase());
 		});
-		return filterBook.map((currenData, index) => {
+		const showBook = filterBook.map((currenData, index) => {
 			return <Book book={currenData} number={index} key={index} />;
 		});
+		if (filterBook.length === 0) {
+			this.setState({ searchField: '' });
+			alert(`Buku tidak ditemukan`);
+		} else {
+			return showBook;
+		}
 	}
 
 	onChangeHandler(e) {
